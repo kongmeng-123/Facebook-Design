@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* :root {
+
+  --primaryColor:rgba(41, 41, 228, 0.826);
+  --secondaryColor: rgb(53, 202, 53);
+  --dangerColor:red;
+  --white-color: white;
+  --back-color:black;
+  
+} */
+
+:root{
+   --primary: 214, 89%, 52% ;  /*blue*/
+   --second: 210, 2%, 50%; /*gray*/
+   --danger: 0, 100%, 54% ; /*red*/
+}
+
+@theme {
+  --color-primary : hsl(var(--primary));
+  --color-second: hsl(var(--second)) ;
+  --color-danger: hsl(var(--danger)) ;
+
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari, and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+  display: none;
+  }
+  /* Hide scrollbar for IE, Edge, and Firefox */
+  .no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  }
+}
+
+@layer components{
+  .list-item{
+    @apply w-full rounded-lg hover:bg-second/20
+  }
+  .list-link {
+    @apply flex h-12 items-center justify-start space-x-2 px-2
+  }
+}
+
+
+
+
+
+/* 
+
+
+.light-mode{
+  background-color: var(--white-color);
+  color: var(--back-color);
+}
+
+.dark-mode{
+  background-color: var(--back-color);
+  color: var(--white-color);
+  color: hsl(0, 100%, 50%);
+
+}
+
+.bg-w{
+  background-color: var(--white-color);
+}
+.t-w{
+  color: var(--white-color);
+}
+
+.bg-d{
+  background-color: var(--back-color);
+}
+
+.t-d{
+  color: var(--back-color);
+}
+
+
+.bg-p-color{
+  background-color: var(--primaryColor);
+  
+}
+
+.bg-s-color{
+  background-color: var(--secondaryColor);
+}
+
+.t-p-color{
+  color:var(--primaryColor)
+}
+
+.t-s-color{
+  color:var(--secondaryColor)
+}
+
+.bg-hover:hover{
+  background-color: aliceblue;
+}
+
+
+
+ */
