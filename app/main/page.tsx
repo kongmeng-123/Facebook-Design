@@ -15,8 +15,8 @@ import { BiCloset, BiWorld } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
 import { acount } from "@/types/acount";
 import { useEffect, useState } from "react";
-import { Comment_post } from "./component/comment_post";
-import { AmountPost } from "./component/amountPost";
+import { Comment_post } from "./component/post/comment_post";
+import { AmountPost } from "./component/post/amountPost";
 // import { acounts } from "@/services/acounts";
 
 const HomePage = () => {
