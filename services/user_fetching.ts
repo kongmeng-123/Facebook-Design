@@ -2,7 +2,7 @@ import { userRes } from "@/types/users"
 
 export const user_fetching = async (): Promise<userRes> => {
     try {
-        const res = await fetch("https://randomuser.me/api/?results=10")
+        const res = await fetch("https://randomuser.me/api/?results=15")
         if (!res.ok) {
             throw new Error("Network response was not ok")
         }

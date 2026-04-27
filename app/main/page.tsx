@@ -11,25 +11,31 @@ import { fetchData } from "@/services/first_fectching_api";
 import { Items } from "@/types/Item";
 import { acounts } from "@/services/acounts";
 import { BsThreeDots } from "react-icons/bs";
-import { BiCloset, BiWorld } from "react-icons/bi";
+import { BiCloset, BiLike, BiMessage, BiWorld } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
 import { acount } from "@/types/acount";
 import { useEffect, useState } from "react";
 import { Comment_post } from "./component/post/comment_post";
 import { AmountPost } from "./component/post/amountPost";
+import { postContent } from "@/services/postContent";
+import { postType } from "@/types/postContent";
+import { TbShare3 } from "react-icons/tb";
 // import { acounts } from "@/services/acounts";
 
 const HomePage = () => {
     const [isFollow, setisFollow] = useState("Follow")
     const [datas, setDatas] = useState<acount[]>([])
-    const [amountPost, setamountPost] = useState<number>(4)
-    const [sizePost, setsizePost] = useState<number>(4 / 4)
+    const [posts, setPost] = useState<postType[]>([])
+    // const [sizePost, setsizePost] = useState<number>(4 / 4)
     
     useEffect(() => {
         const loadData = async () => {
             try {
                 const data = await acounts()
                 setDatas(data)
+                const postData = await postContent()
+                setPost(postData)
+                
                 
             }
             catch (err: unknown) {
@@ -39,15 +45,24 @@ const HomePage = () => {
             }
         }
         loadData()
-      
-
-        
     }, [])
 
-    const listPost = datas.length > 0 
-        ? [datas[5]?.item?.image, datas[9]?.item?.image].filter(Boolean) as string[]
-        : [];
-    console.log(listPost)
+    const handleFollow = (id:number) => {
+        setPost(posts.map(item => 
+            item.id == id ?{...item, isFollow:!item.isFollow} : item
+        )
+        )
+    }
+
+    const handleLike = (id: number) => {
+        setPost(posts.map(item =>
+            item.id == id ? { ...item, isLike: !item.isLike} : item
+            
+        ))
+        !posts[id].isLike ? posts[id].action.like ++ : posts[id].action.like --
+        
+    }
+
     
    
     
@@ -102,42 +117,62 @@ const HomePage = () => {
                 
             </div>
             {/* content section */}
-            <div>
-                {/* content 1 */}
-                <div className="h-auto w-full shadow-[0_0_1px_black] inset-shadow-sm rounded-lg overflow-hidden">
-                    <div className="w-full bg-white p-2 flex justify-between items-center">
-                        <div className="flex items-center space-x-2">
-                            <Link href={"#"} className="h-10 w-10 border-4 border-primary rounded-full overflow-auto">
-                                <Image src={walkpaper1} alt="friend profile"/>
-                            </Link>
-                            <div>
-                                <div>
-                                    <Link href={"#"}><b>name</b></Link>
-                                    <span className={`${isFollow == "Following" ? "text-second":"text-primary"} cursor-pointer`} onClick={()=>isFollow == "Follow" ? setisFollow("Following"):setisFollow("Follow")}> • { isFollow}</span>
+            {
+                posts.map((content) => (
+                    <div key={content.id}>
+                        {/* content 1 */}
+                        <div className="h-auto w-full shadow-[0_0_1px_black] inset-shadow-sm rounded-lg overflow-hidden">
+                            <div className="w-full bg-white p-2 flex justify-between items-center">
+                                <div className="flex items-center space-x-2">
+                                    <Link href={"#"} className="h-10 w-10 border-4 border-primary rounded-full overflow-auto relative">
+                                        <Image src={content.ownnerImage} alt="friend profile" fill/>
+                                    </Link>
+                                    <div>
+                                        <div>
+                                            <Link href={"#"}><b>{content.ownnerName }</b></Link>
+                                            <span className={`${content.isFollow == true ? "text-second":"text-primary"} cursor-pointer`} onClick= {() => handleFollow(content.id)}> • {content.isFollow ? "Following": "Follow" }</span>
+                                        </div>
+                                        <div className="flex space-x-1 items-center text-sm text-second">
+                                            <span>year</span> <span>month</span> <span>day</span> <span>at</span> <span>time</span> • <span><BiWorld /></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flex space-x-1 items-center text-sm text-second">
-                                    <span>year</span> <span>month</span> <span>day</span> <span>at</span> <span>time</span> • <span><BiWorld /></span>
+                                <div className="flex text-4xl space-x-2">
+                                    <BsThreeDots className="p-2 rounded-full hover:bg-second/20"/>
+                                    <IoMdClose className="p-2 rounded-full hover:bg-second/20"/>
                                 </div>
+                                
+                            </div>
+                            <div >
+                                <Comment_post comment={content.descript } />
+                            </div>
+                            <div >
+                                <AmountPost amountPost= {content.src} />
+                            
+                            </div>
+                            <hr />
+                            <div className="px-2 h-10 w-full flex items-center">
+                                <div className="flex space-x-3 items-center h-full">
+                                    <div className="flex space-x-1">
+                                        <BiLike className={`text-2xl ${content.isLike ? "text-primary": "text-black"} hover:text-3xl duration-150`} onClick={()=> handleLike(content.id)}/>
+                                        <span>{ content.action.like}</span>
+                                    </div>
+                                    <div className="flex space-x-1">
+                                        <BiMessage className="text-2xl hover:text-3xl duration-150" />
+                                        <span>{ content.action.comment}</span>
+                                    </div>
+                                    <div className="flex space-x-1">
+                                        <TbShare3 className="text-2xl hover:text-3xl duration-150" />
+                                        <span>{ content.action.share}</span>
+                                    </div>
+                                </div>
+                                <div></div>
                             </div>
                         </div>
-                        <div className="flex text-4xl space-x-2">
-                            <BsThreeDots className="p-2 rounded-full hover:bg-second/20"/>
-                            <IoMdClose className="p-2 rounded-full hover:bg-second/20"/>
-                        </div>
-                        
                     </div>
-                    <div >
-                        <Comment_post comment= "helo ksjlfjaldjfskdfjlaj "/>
-                    </div>
-                    <div >
-                        <AmountPost amountPost= {listPost} />
-                       
-                    </div>
-                    <div className="p-2 w-full bg-sky-500">
-                        action
-                    </div>
-                </div>
-            </div>
+                ))
+            }
+           
             
 
            
