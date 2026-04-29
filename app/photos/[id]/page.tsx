@@ -1,16 +1,16 @@
 "use client"
-import { SkeletonCard } from "@/components/ui/PhotoSke";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import { Spinner } from "@/components/ui/spinner";
 import { postContent } from "@/services/postContent";
 import { postType } from "@/types/postContent";
-import { promises } from "dns";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { BiLike, BiMessage } from "react-icons/bi";
 import { TbShare3 } from "react-icons/tb";
 
-export default function Post() {
+export default function Post({ params }: { params: Promise< { id: number }> }) {
+    const getParams = use(params)
+    console.log(getParams.id)
     const [post, setPost] = useState<postType[]>([])
     const [loading, setLoading] = useState(true);
     useEffect(() => {
@@ -30,7 +30,7 @@ export default function Post() {
         loadData()
     }, [])
     
-    const targetPost = post[2]
+    const targetPost = post[getParams.id]
     return (
         <div className="max-w-172 w-full h-[100vh] relative left-1/2 translate-x-[-50%]">
             <ul className="h-auto w-full space-y-2">
@@ -38,8 +38,8 @@ export default function Post() {
                     targetPost?.src ? (
 
                         targetPost.src.map(src => (
-                            <li className="aspect-square w-full flex flex-col items-center border-2" key={src.id}>
-                                <div className="aspect-square w-full bg-white relative border-b-2">
+                            <li className="aspect-square w-full flex flex-col items-center border" key={src.id}>
+                                <div className="aspect-square w-full bg-white relative border-b">
                                     <Image src={src.src} alt="image" fill className="object-contain"/>
                                 </div>
                                 

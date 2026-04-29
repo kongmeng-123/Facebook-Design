@@ -46,6 +46,7 @@ const HomePage = () => {
         }
         loadData()
     }, [])
+    
 
     const handleFollow = (id:number) => {
         setPost(posts.map(item => 
@@ -147,7 +148,9 @@ const HomePage = () => {
                                 <Comment_post comment={content.descript } />
                             </div>
                             <div >
-                                <AmountPost amountPost= {content.src} />
+                                <Link href={`../photos/${content.id}`}>
+                                    <AmountPost amountPost= {content.src} />
+                                </Link>
                             
                             </div>
                             <hr />

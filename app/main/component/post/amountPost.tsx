@@ -86,7 +86,7 @@ export const AmountPost = ({amountPost = []} : {amountPost:srcType[]}) => {
                 <div className="h-full w-full relative bg-white flex justify-center items-center">
                     <Image src={amountPost[3].src} alt="image one" fill className="object-contain" />
                     <div className="h-full w-full bg-second/40 z-2 absolute"></div>
-                    <span className="absolute text-black z-2 text-2xl">+ {amount - 4}</span>
+                    <span className="absolute text-white z-2 text-2xl">+ {amount - 4}</span>
 
                     
                 </div>
